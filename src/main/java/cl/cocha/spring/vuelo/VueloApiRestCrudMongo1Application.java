@@ -1,0 +1,13 @@
+package cl.cocha.spring.vuelo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class VueloApiRestCrudMongo1Application {
+
+	public static void main(String[] args) {
+		SpringApplication.run(VueloApiRestCrudMongo1Application.class, args);
+	}
+
+}
