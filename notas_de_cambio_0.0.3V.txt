@@ -1,0 +1,27 @@
+Se cambio el nombre del documento que contiene los cambios de cada version o commit subido sobre el proyecto:
+
+antes:
+
+spring_api_rest_CRUD_Vuelos_0.0.2V.txt
+
+en adelante:
+
+notas_de_cambio_"version del cambio"V.txt
+
+Se agrego el metodo PUT en la clase VueloController, pero aun no se prueba:
+
+@PutMapping(value = "/updateVuelo/{id}")
+ public ResponseEntity<?> updateVueloById(@PathVariable("id") Long idFlight, @RequestBody Vuelo newVueloData) {
+   Optional<Vuelo> idVueloEncontrada = vueloRepository.findById(idFlight);
+     if (idVueloEncontrada.isPresent()) {
+
+	Vuelo vueloEncontrado = idVueloEncontrada.get();
+	vueloEncontrado.setIdFligth ( newVueloData.getIdFligth() != null ? newVueloData.getIdFligth() : vueloEncontrado.getIdFligth());
+	vueloEncontrado.setTitleFlight ( newVueloData.getTitleFlight() != null ? newVueloData.getTitleFlight() : vueloEncontrado.getTitleFlight());
+	vueloRepository.save(vueloEncontrado);
+	return new ResponseEntity<>(vueloEncontrado, HttpStatus.OK);
+	}
+	else {
+		return new ResponseEntity<>("Vuelo actualizado"+ idFlight, HttpStatus.NOT_FOUND);
+	}
+ }
