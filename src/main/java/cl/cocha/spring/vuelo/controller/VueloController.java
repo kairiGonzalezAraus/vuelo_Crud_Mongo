@@ -15,17 +15,17 @@ public class VueloController {
 	@Autowired
 	public VueloRepository vueloRepository;
 
-	@GetMapping (value = "/all")
+	@GetMapping(value = "/all")
 	public List<Vuelo> getAllVuelos() {
 		
 		return vueloRepository.findAll();
 	}
 	
-	@PostMapping (value = "/createVuelo")
+	@PostMapping(value = "/createVuelo")
 	public String createVuelo(@RequestBody Vuelo vuelo) {
 		
 		Vuelo insertedVuelo = vueloRepository.insert(vuelo);
-		return "Vuelo registrado" + insertedVuelo.getTitleFlight();
+		return "Vuelo registrado "+ insertedVuelo.getTitleFlight();
 	}
 	
 }
