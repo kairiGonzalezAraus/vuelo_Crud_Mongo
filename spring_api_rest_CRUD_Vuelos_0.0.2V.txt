@@ -25,4 +25,12 @@ public Vuelo() {
  super();
 }
 
+Se removio "implements Serializable" del codigo inicial de la clase Vuelo ya que no era necesario:
+
+antes:
+public class Vuelo implements Serializable{
+
+despues:
+public class Vuelo {
+
 Fin de las notas de version.
