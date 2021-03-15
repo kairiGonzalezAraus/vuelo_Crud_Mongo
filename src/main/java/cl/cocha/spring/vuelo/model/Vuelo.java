@@ -2,17 +2,11 @@ package cl.cocha.spring.vuelo.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 
 @Document (collection = "vuelo")
 public class Vuelo {
 	
 	@Id
-	@Field("_id")
-	@JsonIgnore
 	private String id;
 	
 	private Long idFlight;
@@ -20,6 +14,14 @@ public class Vuelo {
 	
 	public Vuelo() {
 		super();
+	}
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public Long getIdFligth() {
@@ -40,7 +42,7 @@ public class Vuelo {
 	
 	@Override
 	public String toString() {
-		return "Vuelo [idFlight=" + idFlight + ", titleFlight=" + titleFlight + "]";
+		return "Vuelo [id=" + id + "idFlight=" + idFlight + ", titleFlight=" + titleFlight + "]";
 		
 	}
 	

@@ -1,0 +1,95 @@
+Cambios en VueloRepository.java:
+
+Se cambio el tipo de dato para interactuar con el MongoRepository ya que generaba problemas con el metodo PUT
+
+antes:
+
+@Repository
+public interface VueloRepository extends MongoRepository<Vuelo, Long>{
+
+}
+
+despues:
+@Repository
+public interface VueloRepository extends MongoRepository<Vuelo, String>{
+	
+}
+
+Cambios en el Model Vuelo.java:
+
+Se eliminaron las anotaciones debido a que generaban problemas con el metodo PUT,
+tambien se probo si al sacarlos generaban problemas en los otros metodos, no se genero ningun problema.
+
+@JsonIgnore
+@Field("_id")
+
+Se agrego ("id=" + id + ) al metodo toString:
+
+antes:
+
+@Override
+public String toString() {
+	return "Vuelo [id=" + id + "idFlight=" + idFlight + ", titleFlight=" + titleFlight + "]";
+		
+}
+
+despues:
+
+@Override
+public String toString() {
+	return "Vuelo [id=" + id + "idFlight=" + idFlight + ", titleFlight=" + titleFlight + "]";
+	
+}
+
+Se realizaron cambios en controller VueloController.java:
+
+Se realizaron cambios en el metodo PUT
+
+antes:
+
+@PutMapping(value = "/updateVuelo/{id}")
+public ResponseEntity<?> updateVueloById(@PathVariable("id") Long idFlight, @RequestBody Vuelo newVueloData) {
+	Optional<Vuelo> idVueloEncontrada = vueloRepository.findById(idFlight);
+		if (idVueloEncontrada.isPresent()) {
+			
+			Vuelo vueloEncontrado = idVueloEncontrada.get();
+			vueloEncontrado.setIdFligth ( newVueloData.getIdFligth() != null ? newVueloData.getIdFligth() : vueloEncontrado.getIdFligth());
+			vueloEncontrado.setTitleFlight ( newVueloData.getTitleFlight() != null ? newVueloData.getTitleFlight() : vueloEncontrado.getTitleFlight());
+			vueloRepository.save(vueloEncontrado);
+			return new ResponseEntity<>(vueloEncontrado, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>("Vuelo no actualizado"+ idFlight, HttpStatus.NOT_FOUND);
+		}
+}
+
+despues:
+
+@PutMapping(value = "/updateVuelo/{_id}")
+public ResponseEntity<?> updateVueloById(@PathVariable("_id") String id, @RequestBody Vuelo newVueloData) {
+	Optional<Vuelo> idVueloEncontrada = vueloRepository.findById(id);
+		if (idVueloEncontrada.isPresent()) {
+			
+			Vuelo vueloEncontrado = idVueloEncontrada.get();
+			vueloEncontrado.setIdFligth ( newVueloData.getIdFligth() != null ? newVueloData.getIdFligth() : vueloEncontrado.getIdFligth());
+			vueloEncontrado.setTitleFlight ( newVueloData.getTitleFlight() != null ? newVueloData.getTitleFlight() : vueloEncontrado.getTitleFlight());
+			vueloRepository.save(vueloEncontrado);
+			return new ResponseEntity<>(vueloEncontrado, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>("Vuelo no actualizado"+ id, HttpStatus.NOT_FOUND);
+		}
+}
+
+Se agrego tambien la funcion DELETE, se probo con resultado exitoso:
+
+@DeleteMapping(value = "/deleteVuelo/{_id}")
+public ResponseEntity<?> deleteVueloById(@PathVariable("_id") String id){
+	try {
+		vueloRepository.deleteById(id);
+		return new ResponseEntity<>("Vuelo eliminado exitosamente "+ id, HttpStatus.OK);	
+	} 
+	catch (Exception e){
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+	}
+}

@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,9 +35,9 @@ public class VueloController {
 		return "Vuelo registrado "+ insertedVuelo.getTitleFlight();
 	}
 	
-	@PutMapping(value = "/updateVuelo/{id}")
-	public ResponseEntity<?> updateVueloById(@PathVariable("id") Long idFlight, @RequestBody Vuelo newVueloData) {
-		Optional<Vuelo> idVueloEncontrada = vueloRepository.findById(idFlight);
+	@PutMapping(value = "/updateVuelo/{_id}")
+	public ResponseEntity<?> updateVueloById(@PathVariable("_id") String id, @RequestBody Vuelo newVueloData) {
+		Optional<Vuelo> idVueloEncontrada = vueloRepository.findById(id);
 			if (idVueloEncontrada.isPresent()) {
 				
 				Vuelo vueloEncontrado = idVueloEncontrada.get();
@@ -46,8 +47,19 @@ public class VueloController {
 				return new ResponseEntity<>(vueloEncontrado, HttpStatus.OK);
 			}
 			else {
-				return new ResponseEntity<>("Vuelo actualizado"+ idFlight, HttpStatus.NOT_FOUND);
+				return new ResponseEntity<>("Vuelo no actualizado "+ id, HttpStatus.NOT_FOUND);
 			}
+	}
+	
+	@DeleteMapping(value = "/deleteVuelo/{_id}")
+	public ResponseEntity<?> deleteVueloById(@PathVariable("_id") String id){
+		try {
+			vueloRepository.deleteById(id);
+			return new ResponseEntity<>("Vuelo eliminado exitosamente "+ id, HttpStatus.OK);	
+		} 
+		catch (Exception e){
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
 	}
 	
 }
