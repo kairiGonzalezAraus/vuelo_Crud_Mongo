@@ -9,8 +9,12 @@ public class Vuelo {
 	@Id
 	private String id;
 	
-	private Long idFlight;
+	private String supplierId;
 	private String titleFlight;
+	private String descriptionFlight;
+	private String imageFlight;
+	private String originFlightCode;
+	private String locationFlightCode;
 	
 	public Vuelo() {
 		super();
@@ -24,12 +28,12 @@ public class Vuelo {
 		this.id = id;
 	}
 
-	public Long getIdFligth() {
-		return idFlight;
+	public String getSupplierId() {
+		return supplierId;
 	}
 	
-	public void setIdFligth(Long idFligth) {
-		this.idFlight = idFligth;
+	public void setSupplierId(String supplierId) {
+		this.supplierId = supplierId;
 	}
 	
 	public String getTitleFlight() {
@@ -40,10 +44,43 @@ public class Vuelo {
 		this.titleFlight = titleFlight;
 	}
 	
+	public String getDescriptionFlight() {
+		return descriptionFlight;
+	}
+
+	public void setDescriptionFlight(String descriptionFlight) {
+		this.descriptionFlight = descriptionFlight;
+	}
+
+	public String getImageFlight() {
+		return imageFlight;
+	}
+
+	public void setImageFlight(String imageFlight) {
+		this.imageFlight = imageFlight;
+	}
+
+	public String getOriginFlightCode() {
+		return originFlightCode;
+	}
+
+	public void setOriginFlightCode(String originFlightCode) {
+		this.originFlightCode = originFlightCode;
+	}
+
+	public String getLocationFlightCode() {
+		return locationFlightCode;
+	}
+
+	public void setLocationFlightCode(String locationFlightCode) {
+		this.locationFlightCode = locationFlightCode;
+	}
+
 	@Override
 	public String toString() {
-		return "Vuelo [id=" + id + "idFlight=" + idFlight + ", titleFlight=" + titleFlight + "]";
-		
+		return "Vuelo [id=" + id + "supplierId=" + supplierId + ", titleFlight=" + titleFlight + 
+				"descriptionFlight=" + descriptionFlight + "imageFlight=" + imageFlight + 
+				"originFlightCode=" + originFlightCode + "locationFlightCode=" + locationFlightCode + "]";
 	}
 	
 }

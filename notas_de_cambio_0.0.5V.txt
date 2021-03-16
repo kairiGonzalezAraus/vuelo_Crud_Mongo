@@ -1,0 +1,174 @@
+Se realizaron cambios en el controller VueloController.java:
+
+Se agrego el metodo GET para buscar por id:
+
+@GetMapping(value = "/singleVuelo/{_id}")
+public ResponseEntity<?> getSingleVuelo(@PathVariable("_id") String id) {
+	Optional<Vuelo> idVueloEncontrada = vueloRepository.findById(id);
+	if(idVueloEncontrada.isPresent()) {
+		return new ResponseEntity<>(idVueloEncontrada.get(), HttpStatus.OK);
+	}
+	else {
+		return new ResponseEntity<>("no se encontro el Vuelo " + id, HttpStatus.NOT_FOUND);
+	}
+}
+
+Se realizaron cambios en el metodo PUT linea 55, se cambiaron los Set y Get de idFligth para supplierId:
+
+antes:
+
+vueloEncontrado.setIdFligth ( newVueloData.getIdFligth() != null ? newVueloData.getIdFligth() : vueloEncontrado.getIdFligth());
+
+despues: 
+
+vueloEncontrado.setSupplierId ( newVueloData.getSupplierId() != null ? newVueloData.getSupplierId() : vueloEncontrado.getSupplierId());
+
+
+Se realizaron cambios al metodo PUT:
+
+Se agregaron las siguientes lineas de codigo para poder modificar las nuevas variables del vuelo,
+en espesifico desde la linea 57 hasta la 60.
+
+vueloEncontrado.setDescriptionFlight( newVueloData.getDescriptionFlight() != null ? newVueloData.getDescriptionFlight() : vueloEncontrado.getDescriptionFlight());
+vueloEncontrado.setImageFlight( newVueloData.getImageFlight() != null ? newVueloData.getImageFlight() : vueloEncontrado.getImageFlight());
+vueloEncontrado.setOriginFlightCode( newVueloData.getOriginFlightCode() != null ? newVueloData.getOriginFlightCode() : vueloEncontrado.getOriginFlightCode());
+vueloEncontrado.setLocationFlightCode( newVueloData.getLocationFlightCode() != null ? newVueloData.getLocationFlightCode() : vueloEncontrado.getLocationFlightCode());
+
+Metodo PUT antes y despues del cambio:
+
+antes:
+
+@PutMapping(value = "/updateVuelo/{_id}")
+public ResponseEntity<?> updateVueloById(@PathVariable("_id") String id, @RequestBody Vuelo newVueloData) {
+	Optional<Vuelo> idVueloEncontrada = vueloRepository.findById(id);
+		if (idVueloEncontrada.isPresent()) {
+			
+			Vuelo vueloEncontrado = idVueloEncontrada.get();
+			vueloEncontrado.setSupplierId ( newVueloData.getSupplierId() != null ? newVueloData.getSupplierId() : vueloEncontrado.getSupplierId());
+			vueloEncontrado.setTitleFlight ( newVueloData.getTitleFlight() != null ? newVueloData.getTitleFlight() : vueloEncontrado.getTitleFlight());			
+			vueloRepository.save(vueloEncontrado);
+			return new ResponseEntity<>(vueloEncontrado, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>("Vuelo no actualizado "+ id, HttpStatus.NOT_FOUND);
+		}
+}
+
+despues:
+
+@PutMapping(value = "/updateVuelo/{_id}")
+public ResponseEntity<?> updateVueloById(@PathVariable("_id") String id, @RequestBody Vuelo newVueloData) {
+	Optional<Vuelo> idVueloEncontrada = vueloRepository.findById(id);
+		if (idVueloEncontrada.isPresent()) {
+			
+			Vuelo vueloEncontrado = idVueloEncontrada.get();
+			vueloEncontrado.setSupplierId ( newVueloData.getSupplierId() != null ? newVueloData.getSupplierId() : vueloEncontrado.getSupplierId());
+			vueloEncontrado.setTitleFlight ( newVueloData.getTitleFlight() != null ? newVueloData.getTitleFlight() : vueloEncontrado.getTitleFlight());
+			vueloEncontrado.setDescriptionFlight( newVueloData.getDescriptionFlight() != null ? newVueloData.getDescriptionFlight() : vueloEncontrado.getDescriptionFlight());
+			vueloEncontrado.setImageFlight( newVueloData.getImageFlight() != null ? newVueloData.getImageFlight() : vueloEncontrado.getImageFlight());
+			vueloEncontrado.setOriginFlightCode( newVueloData.getOriginFlightCode() != null ? newVueloData.getOriginFlightCode() : vueloEncontrado.getOriginFlightCode());
+			vueloEncontrado.setLocationFlightCode( newVueloData.getLocationFlightCode() != null ? newVueloData.getLocationFlightCode() : vueloEncontrado.getLocationFlightCode());
+			vueloRepository.save(vueloEncontrado);
+			return new ResponseEntity<>(vueloEncontrado, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>("Vuelo no actualizado "+ id, HttpStatus.NOT_FOUND);
+		}
+}
+
+
+
+
+Se realizaron cambios en el model Vuelo.java:
+
+Se cambio la varialble idFlight de tipo Long a supplierId de tipo String:
+
+antes:
+
+private Long idFlight;
+
+despues: 
+
+private String supplierId;
+
+Se cambiaro el get y set de idFlight para funcionar con la variable supplierId:
+
+antes:
+
+public Long getIdFlight() {
+	return idFlight;
+}
+
+public void setIdFlight(Long idFlight) {
+	this.idFlight = idFlight;
+}
+
+despues:
+
+public String getSupplierId() {
+	return supplierId;
+}
+
+public void setSupplierId(String supplierId) {
+	this.supplierId = supplierId;
+}
+
+Se agregaron las siguientes variables en la clase Vuelo:
+
+private String descriptionFlight;
+private String imageFlight;
+private String originFlightCode;
+private String locationFlightCode;
+
+Se agregaron los geter y setter de las nuevas variables:
+
+public String getDescriptionFlight() {
+	return descriptionFlight;
+}
+
+public void setDescriptionFlight(String descriptionFlight) {
+	this.descriptionFlight = descriptionFlight;
+}
+
+public String getImageFlight() {
+	return imageFlight;
+}
+
+public void setImageFlight(String imageFlight) {
+	this.imageFlight = imageFlight;
+}
+
+public String getOriginFlightCode() {
+	return originFlightCode;
+}
+
+public void setOriginFlightCode(String originFlightCode) {
+	this.originFlightCode = originFlightCode;
+}
+
+public String getLocationFlightCode() {
+	return locationFlightCode;
+}
+
+public void setLocationFlightCode(String locationFlightCode) {
+	this.locationFlightCode = locationFlightCode;
+}
+
+Se modifico el metodo to String:
+
+antes:
+
+@Override
+public String toString() {
+	return "Vuelo [id=" + id + "supplierId=" + supplierId + ", titleFlight=" + titleFlight + "]";
+	
+}
+
+despues:
+
+@Override
+public String toString() {
+	return "Vuelo [id=" + id + "supplierId=" + supplierId + ", titleFlight=" + titleFlight + 
+		"descriptionFlight=" + descriptionFlight + "imageFlight=" + imageFlight + 
+		"originFlightCode=" + originFlightCode + "locationFlightCode=" + locationFlightCode + "]";
+}

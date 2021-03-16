@@ -24,9 +24,20 @@ public class VueloController {
 
 	@GetMapping(value = "/all")
 	public List<Vuelo> getAllVuelos() {
-		
 		return vueloRepository.findAll();
 	}
+	
+	@GetMapping(value = "/singleVuelo/{_id}")
+	public ResponseEntity<?> getSingleVuelo(@PathVariable("_id") String id) {
+		Optional<Vuelo> idVueloEncontrada = vueloRepository.findById(id);
+		if(idVueloEncontrada.isPresent()) {
+			return new ResponseEntity<>(idVueloEncontrada.get(), HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>("no se encontro el Vuelo " + id, HttpStatus.NOT_FOUND);
+		}
+	}
+	
 	
 	@PostMapping(value = "/createVuelo")
 	public String createVuelo(@RequestBody Vuelo vuelo) {
@@ -41,8 +52,12 @@ public class VueloController {
 			if (idVueloEncontrada.isPresent()) {
 				
 				Vuelo vueloEncontrado = idVueloEncontrada.get();
-				vueloEncontrado.setIdFligth ( newVueloData.getIdFligth() != null ? newVueloData.getIdFligth() : vueloEncontrado.getIdFligth());
-				vueloEncontrado.setTitleFlight ( newVueloData.getTitleFlight() != null ? newVueloData.getTitleFlight() : vueloEncontrado.getTitleFlight());
+				vueloEncontrado.setSupplierId ( newVueloData.getSupplierId() != null ? newVueloData.getSupplierId() : vueloEncontrado.getSupplierId());
+				vueloEncontrado.setTitleFlight ( newVueloData.getTitleFlight() != null ? newVueloData.getTitleFlight() : vueloEncontrado.getTitleFlight());		
+				vueloEncontrado.setDescriptionFlight( newVueloData.getDescriptionFlight() != null ? newVueloData.getDescriptionFlight() : vueloEncontrado.getDescriptionFlight());
+				vueloEncontrado.setImageFlight( newVueloData.getImageFlight() != null ? newVueloData.getImageFlight() : vueloEncontrado.getImageFlight());
+				vueloEncontrado.setOriginFlightCode( newVueloData.getOriginFlightCode() != null ? newVueloData.getOriginFlightCode() : vueloEncontrado.getOriginFlightCode());
+				vueloEncontrado.setLocationFlightCode( newVueloData.getLocationFlightCode() != null ? newVueloData.getLocationFlightCode() : vueloEncontrado.getLocationFlightCode());	
 				vueloRepository.save(vueloEncontrado);
 				return new ResponseEntity<>(vueloEncontrado, HttpStatus.OK);
 			}
